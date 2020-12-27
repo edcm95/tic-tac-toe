@@ -1,0 +1,6 @@
+tictactoe/game/Game.class
+tictactoe/game/Board.class
+tictactoe/Main.class
+tictactoe/ai/regular/DefaultAI.class
+tictactoe/ai/minimax/BoardState.class
+tictactoe/ai/minimax/MinimaxAI.class
