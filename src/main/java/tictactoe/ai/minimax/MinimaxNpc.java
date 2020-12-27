@@ -13,13 +13,13 @@ public class MinimaxNpc {
     public int[] getPlay(final Board board) {
         BoardStateNode origin = new BoardStateNode(board.getBoard(), null);
         steps = 0;
-        minimax(origin, 1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, true);
+        minimax(origin, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, true);
         System.out.println("Minimax steps calculated: " + steps);
 
         return nextMove;
     }
 
-    private double minimax(BoardStateNode origin, int depth, double a, double b, boolean maximizing) {
+    private double minimax(BoardStateNode origin, double a, double b, boolean maximizing) {
         steps++;
         LinkedList<BoardStateNode> possibilities = getPossibilities(origin);
 
@@ -32,7 +32,7 @@ public class MinimaxNpc {
         if (maximizing) {
             value = Double.NEGATIVE_INFINITY;
             for (BoardStateNode possibility : possibilities) {
-                value = Math.max(value, minimax(possibility, depth - 1, a, b, false));
+                value = Math.max(value, minimax(possibility, a, b, false));
                 a = Math.max(a, value);
                 if (a >= b) {
                     return a;
@@ -42,7 +42,7 @@ public class MinimaxNpc {
         } else {
             value = Double.POSITIVE_INFINITY;
             for (BoardStateNode possibility : possibilities) {
-                value = Math.min(value, minimax(possibility, depth - 1, a, b, true));
+                value = Math.min(value, minimax(possibility, a, b, true));
                 b = Math.min(value, b);
                 if (b <= a) {
                     return b;
