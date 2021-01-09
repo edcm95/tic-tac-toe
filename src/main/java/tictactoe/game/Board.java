@@ -22,18 +22,31 @@ public class Board {
     }
 
     public static int evaluateBoard(int[][] matrix) {
-        int horizontalSum = 0;
-        int verticalSum = 0;
-        for (int y = 0; y < matrix.length; y++) { // Y
-            for (int x = 0; x < matrix[y].length; x++) { // X
+        for (int y = 0; y < boardSize; y++) { // Y
+            int horizontalSum = 0;
+            for (int x = 0; x < boardSize; x++) { // X
                 horizontalSum += matrix[y][x];
-                verticalSum += matrix[x][y]; //inverted
 
-                if (horizontalSum == (boardSize * Game.playerValue) || verticalSum == (boardSize * Game.playerValue)) {
+                if (horizontalSum == (boardSize * Game.playerValue)) {
                     return Game.playerValue;
                 }
 
-                if (horizontalSum == (boardSize * Game.npcValue) || verticalSum == (boardSize * Game.npcValue)) {
+                if (horizontalSum == (boardSize * Game.npcValue)) {
+                    return Game.npcValue;
+                }
+            }
+        }
+
+        for (int x = 0; x < boardSize; x++) { // X
+            int verticalSum = 0;
+            for (int y = 0; y < boardSize; y++) { // Y
+                verticalSum += matrix[y][x];
+
+                if (verticalSum == (boardSize * Game.playerValue)) {
+                    return Game.playerValue;
+                }
+
+                if (verticalSum == (boardSize * Game.npcValue)) {
                     return Game.npcValue;
                 }
             }
@@ -55,7 +68,6 @@ public class Board {
 
         if (diagSumLeft == (boardSize * Game.playerValue) || diagSumRight == (boardSize * Game.playerValue)) {
             return Game.playerValue;
-
         }
 
         if (diagSumLeft == (boardSize * Game.npcValue) || diagSumRight == (boardSize * Game.npcValue)) {
