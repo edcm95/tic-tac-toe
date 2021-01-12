@@ -1,14 +1,14 @@
 package tictactoe.game;
 
+import tictactoe.ai.minimax.MinimaxIterativeNpc;
 import tictactoe.ai.minimax.MinimaxNpc;
-import tictactoe.ai.regular.DefaultNPC;
 
 import java.util.Scanner;
 
 public class Game {
 
-    private DefaultNPC ai;
-    private MinimaxNpc minimaxAI;
+    private MinimaxIterativeNpc iterativeAi;
+    private MinimaxNpc recursiveAi;
     private Board board;
     private Scanner scanner;
     private boolean playersTurn;
@@ -18,8 +18,8 @@ public class Game {
 
     public Game() {
         this.board = new Board();
-        this.ai = new DefaultNPC(board);
-        this.minimaxAI = new MinimaxNpc();
+        this.iterativeAi = new MinimaxIterativeNpc();
+        this.recursiveAi = new MinimaxNpc();
         init();
     }
 
@@ -43,17 +43,17 @@ public class Game {
             //Display screen
             System.out.println(board.toString());
 
-            sleep(10);
+            sleep(1000);
 
             // check win
             int result = Board.evaluateBoard(board.getBoard());
             if (result != 0) {
                 if (result == playerValue) {
-                    System.out.println("You win!");
+                    System.out.println("Player wins!");
                 }
 
                 if (result == npcValue) {
-                    System.out.println("You lose.");
+                    System.out.println("Computer wins.");
                 }
                 break;
             }
@@ -67,12 +67,13 @@ public class Game {
             int[] play;
             if (playersTurn) {
                 play = getPlayerChoice();
+                //play = iterativeAi.getPlay(board);
                 board.checkBoard(play[0], play[1], playerValue);
                 playersTurn = false;
 
             } else {
                 System.out.println("Computer playing.");
-                play = minimaxAI.getPlay(board);
+                play = recursiveAi.getPlay(board);
                 board.checkBoard(play[0], play[1], npcValue);
                 playersTurn = true;
             }
@@ -82,13 +83,6 @@ public class Game {
     private int[] getPlayerChoice() {
         System.out.println("Enter xy: \n");
         String in = scanner.nextLine();
-
-        if ("test".equals(in)) {
-            MinimaxNpc test = new MinimaxNpc();
-            test.getPlay(board);
-
-            return getPlayerChoice();
-        }
 
         if (in.length() != 2) {
             System.out.println("Wrong input.");

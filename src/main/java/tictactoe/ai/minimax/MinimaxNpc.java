@@ -1,23 +1,27 @@
 package tictactoe.ai.minimax;
 
+import com.sun.istack.internal.NotNull;
 import tictactoe.game.Board;
 import tictactoe.game.Game;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TreeMap;
 
+//TODO -> Make an iterative version of this
 public class MinimaxNpc {
 
     private BoardStateNode nextMove;
     private int steps;
 
     public int[] getPlay(final Board board) {
-        BoardStateNode origin = new BoardStateNode(copyState(board.getBoard()), null);
+        BoardStateNode origin = new BoardStateNode(Board.copyState(board.getBoard()), null);
 
-        List<BoardStateNode> nextMoves = getChildren(origin, true);
+        List<BoardStateNode> nextMoves = origin.getChildren(true);
 
         double value = Double.NEGATIVE_INFINITY;
+        steps = 0;
         for (BoardStateNode possibility : nextMoves) {
             double result = minimax(possibility, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, false);
             if (result > value) {
@@ -26,17 +30,13 @@ public class MinimaxNpc {
             }
         }
 
-        //minimax(origin, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, true);
-
-
-        System.out.println("Minimax steps calculated: " + steps);
-
+        System.out.println("Nodes visited: " + steps);
         return nextMove.getPlay();
     }
 
     private double minimax(BoardStateNode currentNode, double a, double b, boolean maximizing) {
         steps++;
-        LinkedList<BoardStateNode> childrenNodes = getChildren(currentNode, maximizing);
+        LinkedList<BoardStateNode> childrenNodes = currentNode.getChildren(maximizing);
 
         if (childrenNodes.isEmpty() || currentNode.getValue() != 0) {
             return currentNode.getValue();
@@ -62,39 +62,7 @@ public class MinimaxNpc {
                     break;
                 }
             }
-
         }
         return value;
-    }
-
-    private LinkedList<BoardStateNode> getChildren(BoardStateNode node, boolean maximizing) {
-        LinkedList<BoardStateNode> possibilities = new LinkedList<>();
-        int[][] currentState = node.getState();
-
-        //process new state
-        for (int y = 0; y < Board.boardSize; y++) {
-            for (int x = 0; x < Board.boardSize; x++) {
-                if (currentState[y][x] != 0) {
-                    continue;
-                }
-
-                int[][] childState = copyState(currentState);
-                childState[y][x] = (maximizing) ? Game.npcValue : Game.playerValue; //
-                BoardStateNode newPossibility = new BoardStateNode(childState, new int[]{x, y}); // xy
-                possibilities.add(newPossibility);
-            }
-        }
-
-        return possibilities;
-    }
-
-    private int[][] copyState(int[][] state) {
-        int[][] newState = new int[Board.boardSize][Board.boardSize];
-        for (int i = 0; i < Board.boardSize; i++) {
-            for (int j = 0; j < Board.boardSize; j++) {
-                newState[i][j] = state[i][j];
-            }
-        }
-        return newState;
     }
 }

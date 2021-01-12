@@ -1,5 +1,9 @@
 package tictactoe.game;
 
+import com.sun.istack.internal.NotNull;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 public class Board {
@@ -145,5 +149,57 @@ public class Board {
             }
         }
         return true;
+    }
+
+    public static int[][] copyState(int[][] state) {
+        int[][] newState = new int[Board.boardSize][Board.boardSize];
+        for (int i = 0; i < Board.boardSize; i++) {
+            for (int j = 0; j < Board.boardSize; j++) {
+                newState[i][j] = state[i][j];
+            }
+        }
+        return newState;
+    }
+
+    private void printInHeader(String text) {
+        final int height = 200;
+        final int width = 600;
+
+        //placement
+        int headerX = 1;
+        int headerY = 1;
+
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics2D = image.createGraphics();
+
+        graphics2D.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        graphics2D.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+
+        graphics2D.drawString(text, headerX, headerY);
+
+        for (int y = 0; y < height; y++) {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (int x = 0; x < width; x++) {
+                boolean currentIsVoid = isVoid(image, x, y);
+                String character = currentIsVoid ? " " : "#";
+
+                if (!currentIsVoid && isVoid(image, (x + 1), y)) { // se for cheio mas à direita for vazio
+                    //    character = "/";
+                }
+
+                stringBuilder.append(character);
+            }
+
+            if (stringBuilder.toString().trim().isEmpty()) {
+                continue;
+            }
+
+            System.out.println(stringBuilder.toString());
+        }
+    }
+
+    private boolean isVoid(@NotNull BufferedImage image, int x, int y) {
+        return image.getRGB(x, y) == -16777216;
     }
 }
