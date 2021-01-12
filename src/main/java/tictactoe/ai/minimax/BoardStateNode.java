@@ -6,16 +6,15 @@ public class BoardStateNode {
 
     private final int[][] state;
     private final int[] play;
-    private final double value;
+    private double score;
 
     public BoardStateNode(int[][] newState, int[] play) {
         this.play = play;
         this.state = newState;
-        this.value = Board.evaluateBoard(this.state);
     }
 
     public double getValue() {
-        return value;
+        return Board.evaluateBoard(state);
     }
 
     public int[][] getState() {
@@ -24,5 +23,13 @@ public class BoardStateNode {
 
     public int[] getPlay() {
         return play;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public double getScore() {
+        return score;
     }
 }

@@ -22,9 +22,9 @@ public class Board {
     }
 
     public static int evaluateBoard(int[][] matrix) {
-        for (int y = 0; y < boardSize; y++) { // Y
+        for (int y = 0; y < boardSize; y++) {
             int horizontalSum = 0;
-            for (int x = 0; x < boardSize; x++) { // X
+            for (int x = 0; x < boardSize; x++) {
                 horizontalSum += matrix[y][x];
 
                 if (horizontalSum == (boardSize * Game.playerValue)) {
@@ -37,9 +37,9 @@ public class Board {
             }
         }
 
-        for (int x = 0; x < boardSize; x++) { // X
+        for (int x = 0; x < boardSize; x++) {
             int verticalSum = 0;
-            for (int y = 0; y < boardSize; y++) { // Y
+            for (int y = 0; y < boardSize; y++) {
                 verticalSum += matrix[y][x];
 
                 if (verticalSum == (boardSize * Game.playerValue)) {

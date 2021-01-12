@@ -29,7 +29,7 @@ public class Game {
 
     public void start() {
         // check who plays first
-        playersTurn = Math.random() > 0.49;
+        playersTurn = true;
 
         while (true) {
             System.out.println("Game starting!");
@@ -43,7 +43,7 @@ public class Game {
             //Display screen
             System.out.println(board.toString());
 
-            sleep(2000);
+            sleep(10);
 
             // check win
             int result = Board.evaluateBoard(board.getBoard());
